@@ -12,8 +12,10 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if(savedInstanceState != null){
             seconds = savedInstanceState.getInt("seconds");
             startRun=savedInstanceState.getBoolean("startRun");
         }
-
+        animations();
         startBtn = (ImageView)findViewById(R.id.button1);
         startBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -56,6 +58,31 @@ public class MainActivity extends AppCompatActivity {
               //  finish(); //because I don't want to close the UI after service started
             }
         });
+    }
+    private void animations(){
+        final TextView soundcom = (TextView) findViewById(R.id.textView);
+        final TextView recTime = (TextView) findViewById(R.id.textView3);
+        final TextView recTimeLive = (TextView) findViewById(R.id.textView4);
+        final TextView tapMicToStart = (TextView) findViewById(R.id.textView2);
+        final ImageView micButton = (ImageView) findViewById(R.id.button1);
+        final ImageView stop = (ImageView) findViewById(R.id.imageButtonStop);
+        final ImageView play = (ImageView) findViewById(R.id.imageButtonPlay);
+        Animation animation1=new TranslateAnimation(0.0f, 0.0f, -100.0f, 0.0f);
+        Animation animation2=new TranslateAnimation(-600.0f, 0.0f, 0.0f, 0.0f);
+        Animation animation3=new TranslateAnimation(600.0f, 0.0f, 0.0f, 0.0f);
+        Animation animation4=new TranslateAnimation(0.0f, 0.0f, 100.0f, 0.0f);
+        animation1.setDuration(1000);
+        animation2.setDuration(1200);
+        animation3.setDuration(1200);
+        animation4.setDuration(1000);
+        soundcom.startAnimation(animation1);
+        recTime.startAnimation(animation2);
+        recTimeLive.startAnimation(animation2);
+        tapMicToStart.startAnimation(animation3);
+        micButton.startAnimation(animation3);
+        stop.startAnimation(animation4);
+        play.startAnimation(animation4);
+
     }
     public void onSaveInstanceState(Bundle saveInstanceState){
         saveInstanceState.putInt("seconds", seconds);
